@@ -10,7 +10,6 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Reservas.Models.ReservaContext";
         }
 
         protected override void Seed(Reservas.Models.ReservaContext context)

@@ -1,0 +1,80 @@
+﻿@model Reservas.Models.Usuario
+
+@{
+    ViewBag.Title = "Registrar Usuario";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .containerAccount {
+        height: 650px;
+        /*alto*/
+        width: 450px;
+        /*ancho*/
+    }
+
+    body {
+        margin: auto;
+    }
+</style>
+
+<body class="transparente">
+    <form id="miFormulario" method="post" action="/Accounts/Register">
+        @Html.AntiForgeryToken()
+
+        <div class="d-grid justify-content-center">
+            <div class="card my-4 containerAccount rounded-5 animation mb-5">
+                <div class="card-header bg-primary rounded-top-5 py-2 mt-2">
+                    <h2 class="text-center text-white">Nuevo Usuario</h2>
+                </div>
+
+                <div class="card-body px-5 py-5 my-2">
+
+                    <span class="">Usuario:</span>
+                    <div class="d-flex justify-content-center mt-1 mb-4">
+                        <input type="text" class="form-control form-control-sm col-6 rounded-5" id="inputUsuario"
+                               placeholder="">
+                    </div>
+
+                    <span class="">Correo:</span>
+                    <div class="d-flex justify-content-center mt-1 mb-4">
+                        <input type="email" class="form-control form-control-sm col-6 rounded-5" id="inputCorreo"
+                               placeholder="">
+                    </div>
+
+                    <span>Contraseña:</span>
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="input-group rounded-5 rounded-start">
+                            <input type="password" class="form-control form-control-sm col-6 rounded-5 rounded-end"
+                                   id="inputPass" placeholder="">
+                            <span id="showPass1" class="input-group-text fa-solid fa-eye-slash"></span>
+
+                        </div>
+                    </div>
+
+                    <span>Confirmar Contraseña:</span>
+                    <div class="d-flex justify-content-center mb-5 ">
+                        <div class="input-group rounded-5 rounded-start">
+                            <input type="password" class="form-control form-control-sm col-6 rounded-5 rounded-end"
+                                   id="inputPassConfirm" placeholder="">
+                            <span id="showPass2" class="input-group-text fa-solid fa-eye-slash"></span>
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-center mt-1 rounded-2">
+                        <button class="btn btn-primary rounded-2" id="btnCrearUsuario">Crear Usuario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</body>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/login.js"></script>
+}

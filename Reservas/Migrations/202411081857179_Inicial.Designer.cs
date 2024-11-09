@@ -13,7 +13,7 @@ namespace Reservas.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202411080443215_Inicial"; }
+            get { return "202411081857179_Inicial"; }
         }
         
         string IMigrationMetadata.Source

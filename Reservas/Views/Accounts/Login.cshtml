@@ -1,0 +1,49 @@
+﻿@model Reservas.Models.Usuario
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <script src="..\js\jquery-3.7.1.min.js"></script>
+
+    <div class="">
+        <div class="card my-5 container rounded-5">
+            <div class="card-header bg-primary rounded-top-5 py-3 mt-2">
+                <h2 class="text-center text-secondary">Inicio Sesión</h2>
+            </div>
+            <div class="card-body px-5 py-5 my-4">
+                <span class="">Correo Electrónico:</span>
+                <div class="d-flex justify-content-center mt-1 mb-4">
+                    <input id="inputCorreo" type="email" class="form-control form-control-sm col-6 rounded-5"
+                           placeholder="Ingresar Correo">
+                </div>
+                <span>Contraseña:</span>
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="input-group rounded-5 rounded-start">
+                        <input type="password" class="form-control form-control-sm col-6 rounded-5 rounded-end"
+                               id="inputPass" placeholder="Ingresar Constraseña">
+                        <span id="showPass1" class="input-group-text fa fa-eye">
+                    </div>
+                    </span>
+                </div>
+                <div class="d-flex justify-content-center pt-5">
+                    <button id="btnLogin" class="btn btn-primary">Iniciar sesion</button>
+
+                </div>
+                <div class="d-flex justify-content-center pt-2">
+                    <a href="crearusuario.php" class="card-link text-info"><small>Crear cuenta</small></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
