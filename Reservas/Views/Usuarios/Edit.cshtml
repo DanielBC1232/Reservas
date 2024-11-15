@@ -15,7 +15,7 @@
         <h4>Usuario</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Idu)
+        @Html.HiddenFor(model => model.Idusuario)
 
         <div class="form-group">
             @Html.LabelFor(model => model.nombreUsuario, htmlAttributes: new { @class = "control-label col-md-2" })

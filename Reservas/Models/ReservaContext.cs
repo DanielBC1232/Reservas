@@ -11,5 +11,7 @@ namespace Reservas.Models
         }
 
         public System.Data.Entity.DbSet<Reservas.Models.Usuario> Usuarios { get; set; }
+
+        public System.Data.Entity.DbSet<Reservas.Models.Sala> Salas { get; set; }
     }
 }
