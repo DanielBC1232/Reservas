@@ -20,6 +20,12 @@ namespace Reservas.Controllers
             return View(db.Salas.ToList());
         }
 
+        public ActionResult GetSala()
+        {
+            var salas = db.Salas.ToList();
+            return Json(salas, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Salas/Details/5
         public ActionResult Details(int? id)
         {

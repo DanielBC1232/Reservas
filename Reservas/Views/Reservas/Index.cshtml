@@ -1,57 +1,75 @@
-﻿@model IEnumerable<Reservas.Models.Reserva>
-
+﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reservar";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.nombreUsuario)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.horaInicio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.horaFin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.nombreSala)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombreUsuario)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.horaInicio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.horaFin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombreSala)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Idreserva }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Idreserva }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Idreserva })
-        </td>
-    </tr>
-}
-
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Nombre de la Sala</th>
+            <th>Capacidad</th>
+            <th>Ubicación</th>
+            <th>Disponibilidad de Equipos</th>
+            <th>Hora de Apertura</th>
+            <th>Hora de Cierre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        <!-- Las filas dinámicas se insertarán aquí con JavaScript -->
+    </tbody>
 </table>
+
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script>
+
+
+    //extraer numero de horas
+    function extractHour(time) {
+        var hours = time.hours;
+        return hours;
+    }
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Salas/GetSala',
+            method: 'GET',
+            dataType: 'json',
+            success: function (respuesta) {
+                let sala = respuesta;
+                let plantilla = '';
+
+                sala.forEach(sala => {
+                    console.log(sala);
+                    plantilla += `
+                        <tr class="align-middle">
+                            <td class="text-center">${sala.nombreSala}</td>
+                            <td class="text-center">${sala.capacidad}</td>
+                            <td class="text-center">${sala.ubicacion}</td>
+                            <td class="text-center">${sala.disponibilidadEquipo}</td>
+                            <td class="text-center">
+                                <input type="text" class="form-control" value="${sala.horaApertura.Hours}:${sala.horaApertura.Minutes.toString().padStart(2, '0')}" readonly />
+                            </td>
+                            <td class="text-center">
+                                <input type="text" class="form-control" value="${sala.horaCierre.Hours}:${sala.horaCierre.Minutes.toString().padStart(2, '0')}" readonly />
+                            </td>
+                            <td>
+                            <button class="btn btn-sm btn-primary">Reservar</button>
+                            <td>
+                        </tr>
+                    `;
+                    $('#tableBody').html(plantilla);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al obtener las salas:', error);
+            }
+        });
+    });
+
+
+</script>
+
