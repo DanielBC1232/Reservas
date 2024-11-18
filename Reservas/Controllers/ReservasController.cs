@@ -42,8 +42,6 @@ namespace Reservas.Controllers
         }
 
         // POST: Reservas/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Idr,nombreUsuario,fecha,horaInicio,horaFin,nombreSala")] Reserva reserva)
@@ -73,9 +71,6 @@ namespace Reservas.Controllers
             return View(reserva);
         }
 
-        // POST: Reservas/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Idr,nombreUsuario,fecha,horaInicio,horaFin,nombreSala")] Reserva reserva)

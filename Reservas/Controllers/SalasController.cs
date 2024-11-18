@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -129,5 +130,28 @@ namespace Reservas.Controllers
             }
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        public JsonResult VerificarReserva(string nombreSala, string horaInicio, string horaCierre, string fecha)
+        {
+            // Convertir horaInicio y horaCierre a TimeSpan
+            TimeSpan horaInicioTS = TimeSpan.Parse(horaInicio);
+            TimeSpan horaCierreTS = TimeSpan.Parse(horaCierre);
+
+            //DateTime fechaReserva = DateTime.Parse(fecha);
+
+            // Llamar al SP para verificar disponibilidad
+            int resultado = db.Database.SqlQuery<int>(
+                "EXEC SP_VERIFICAR_RESERVA @nombreSala, @horaInicio, @horaCierre, @fecha",
+                new SqlParameter("@nombreSala", nombreSala),
+                new SqlParameter("@horaInicio", horaInicioTS),
+                new SqlParameter("@horaCierre", horaCierreTS),
+                new SqlParameter("@fecha", fecha)
+            ).FirstOrDefault();
+
+            return Json(resultado);
+        }
+
     }
+
 }
