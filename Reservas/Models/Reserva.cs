@@ -19,17 +19,16 @@ namespace Reservas.Models
         public DateTime fecha { get; set; }
 
         [Required]
-        public DateTime horaInicio { get; set; }
+        public TimeSpan horaInicio { get; set; }
 
         [Required]
-        public DateTime horaFin { get; set; }
+        public TimeSpan horaFin { get; set; }
 
         [Required]
         [StringLength(50)]
         public string nombreSala { get; set; }
 
         //FK
-
         public int Idsala { get; set; }
 
 
