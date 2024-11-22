@@ -38,25 +38,12 @@ namespace Reservas.Controllers
             return View(reserva);
         }
 
-        // GET: Reservas/Create
-        /*public ActionResult Create()
-        {
-            return View();
-        }*/
 
         // POST: Reservas/Create
         public ActionResult Create(Reserva reserva)
         {
             if (reserva != null)
             {
-                
-                // Imprimir las variables recibidas desde el frontend
-                Debug.WriteLine($"nombreUsuario: {reserva.nombreUsuario}");
-                Debug.WriteLine($"fecha: {reserva.fecha}");
-                Debug.WriteLine($"horaInicio: {reserva.horaInicio}");
-                Debug.WriteLine($"horaCierre: {reserva.horaFin}");
-                Debug.WriteLine($"nombreSala: {reserva.nombreSala}");
-                Debug.WriteLine($"IdSala: {reserva.Idsala}");
                 
                 // Llamada al SP
                 int resultado = db.Database.SqlQuery<int>(
@@ -81,7 +68,6 @@ namespace Reservas.Controllers
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
             return Json(new { success = false, message = "Los datos de la reserva no son válidos.", errors = errors });
         }
-
 
 
         // GET: Reservas/Edit/5

@@ -57,17 +57,17 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.horaApertura, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.horaApertura, htmlAttributes: new { @class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.horaApertura, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.horaApertura, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
                     @Html.ValidationMessageFor(model => model.horaApertura, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.horaCierre, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.horaCierre, htmlAttributes: new { @class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.horaCierre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.horaCierre, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
                     @Html.ValidationMessageFor(model => model.horaCierre, "", new { @class = "text-danger" })
                 </div>
             </div>
