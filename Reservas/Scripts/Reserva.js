@@ -14,157 +14,98 @@ function horaToMinutos(hora) {
     return horas * 60 + minutos;
 }
 
-function Reservar(nombre, ids, aperturaV, cierreV) {
 
-    var tiempoInicio = $("#tiempoInicio").val();
-    var tiempoCierre = $("#tiempoCierre").val();
-    var fecha = $("#fecha").val();
-    var idSala = ids;
-
-    //formato de hora para verificar existencia
-    tiempoInicioF = formatearHora(tiempoInicio);
-    tiempoCierreF = formatearHora(tiempoCierre);
-
-    //inputs de horas
-    var inputHoraInicio = horaToMinutos(tiempoInicio);
-    var inputHoraCierre = horaToMinutos(tiempoCierre);
-
-    //verificaciones ------------------------------------------------------------
-
-    //var global para verificar varios aspectos antes de agregar a BD
-    var verifica = true;
-
-    //verificar que los campos de horas y fecha no esten vacios
-    if (tiempoInicio.trim() == "" || tiempoCierre.trim() == "" || fecha.trim() == "") {
-        verifica = false;
-
-        Swal.fire({
-            icon: "error",
-            text: "Campos de rango de horas o fecha vacios.",
-            showConfirmButton: false,
-        });
-        return;
-    } else if (tiempoInicio.trim() !== "" && tiempoCierre.trim() !== "" && fecha.trim() !== "") {
-        verifica = true;
+function validarInputs(tiempoInicio, tiempoCierre, fecha, aperturaV, cierreV) {
+    if (!tiempoInicio || !tiempoCierre || !fecha) {
+        Swal.fire({ icon: "error", text: "Campos de rango de horas o fecha vacíos." });
+        return false;
     }
 
-    //verificar que la hora inicial no sea mayor a la de fin
-    if (tiempoInicio >= tiempoCierre) {
-
-        verifica = false;
-
-        Swal.fire({
-            icon: "error",
-            text: "La hora de inicio es mayor que la hora de cierre.",
-            showConfirmButton: false,
-        });
-        return;
-    } else if (tiempoInicio <= tiempoCierre) {
-        verifica = true;
+    if (horaToMinutos(tiempoInicio) >= horaToMinutos(tiempoCierre)) {
+        Swal.fire({ icon: "error", text: "La hora de inicio es mayor que la de cierre." });
+        return false;
     }
 
-
-    //verificar que las horas se encuentren en el rango de disponibilidad del salon seleccionado
     if (horaToMinutos(tiempoInicio) < aperturaV || horaToMinutos(tiempoCierre) > cierreV) {
-        verifica = false;
-
-        Swal.fire({
-            icon: "error",
-            text: "Las el tiempo que intentas reservar esta fuera del rango de tiempo de la sala.",
-            showConfirmButton: false,
-        });
-        return;
-    } else if (horaToMinutos(tiempoInicio) >= aperturaV && horaToMinutos(tiempoCierre) <= cierreV) {
-        verifica = true;
+        Swal.fire({ icon: "error", text: "El rango de tiempo está fuera del horario de la sala." });
+        return false;
     }
 
-
-    //verificar que la fecha sea igual o superior a la fecha actual
     let fechaActual = new Date();
-
-    if (fecha <= fechaActual) {
-
-        verifica = false;
-
-        Swal.fire({
-            icon: "error",
-            text: "No puedes reservar con una fecha pasada",
-            showConfirmButton: false,
-        });
-        return;
-    } else if (fecha >= fechaActual) {
-        verifica = true;
+    let fechaReserva = new Date(fecha);
+    if (fechaReserva <= fechaActual) {
+        Swal.fire({ icon: "error", text: "No puedes reservar en una fecha pasada." });
+        return false;
     }
 
-    //verificar antes de insertar conflictos con reservas con la misma fecha U horas
+    return true;
+}
+
+//verificar antes de insertar conflictos con reservas con la misma fecha y horas
+function verificarDisponibilidad(nombre, tiempoInicio, tiempoCierre, fecha, callback) {
     $.ajax({
         url: '/Salas/VerificarReserva',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify({
-            nombreSala: nombre,
-            horaInicio: tiempoInicioF,
-            horaCierre: tiempoCierreF,
-            fecha: fecha
-        }),
+        data: JSON.stringify({ nombreSala: nombre, horaInicio: tiempoInicio, horaCierre: tiempoCierre, fecha: fecha }),
         success: function (respuesta) {
-            //console.log(respuesta);
-            if (respuesta === 0) {
-                verifica = true;
-
+            if (respuesta.success === true) {
+                callback(true);
             } else {
                 Swal.fire({
                     icon: "error",
-                    text: "La sala no esta disponible en la fecha y horas seleccionadas",
-                    showConfirmButton: false,
+                    text: "La sala no está disponible en la fecha y horas seleccionadas.",
                 });
-                verifica = false;
-                return;
+                callback(false);
             }
         }
+
     });
+}
 
+function Reservar(nombre, ids, aperturaV, cierreV) {
+    var tiempoInicio = $("#tiempoInicio").val();
+    var tiempoCierre = $("#tiempoCierre").val();
+    var fecha = $("#fecha").val();
 
-
-    if (verifica == true) {
-
-        Swal.fire({
-            icon: "success",
-            text: "Salon " + nombre + " Reservado",
-            showConfirmButton: false,
-        });
-
-        //crear reserva ****
-
-        $.ajax({
-            url: '/Reservas/Create',
-            method: 'POST',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify({
-                nombreUsuario: "Usuario02",//Tomar el usuario de la sesion
-                fecha: fecha,
-                horaInicio: tiempoInicio,
-                horaFin: tiempoCierre,
-                nombreSala: nombre,
-                Idsala: idSala
-            }),
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (error) {
-                console.error("Error:", error);
-            }
-        });
-
-
-
-    } else {
-        //**
+    // validaciones de inputs
+    if (!validarInputs(tiempoInicio, tiempoCierre, fecha, aperturaV, cierreV)) {
+        return;
     }
 
+    // verificar disponibilidad
+    verificarDisponibilidad(nombre, tiempoInicio, tiempoCierre, fecha, function (isAvailable) {
+        if (isAvailable) {
+            reservar(nombre, ids, fecha, tiempoInicio, tiempoCierre);
+        }
+    });
 }
+
+
+function reservar(nombre, ids, fecha, tiempoInicio, tiempoCierre) {
+    $.ajax({
+        url: '/Reservas/Create',
+        method: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+            nombreUsuario: "Usuario02", // Cambiar por el usuario en sesión
+            fecha: fecha,
+            horaInicio: tiempoInicio,
+            horaFin: tiempoCierre,
+            nombreSala: nombre,
+            Idsala: ids
+        }),
+        success: function () {
+            Swal.fire({ icon: "success", text: `Sala ${nombre} reservada exitosamente.` });
+        },
+        error: function () {
+            Swal.fire({ icon: "error", text: "Error al reservar la sala." });
+        }
+    });
+}
+
 //extraer numero de horas
 function extractHour(time) {
     var hours = time.hours;

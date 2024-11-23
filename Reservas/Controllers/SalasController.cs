@@ -147,7 +147,14 @@ namespace Reservas.Controllers
                 new SqlParameter("@fecha", fecha)
             ).FirstOrDefault();
 
-            return Json(resultado);
+            if (resultado == 0)
+            {
+                return Json(new { success = true, message = "La sala está disponible." });
+            }
+            else
+            {
+                return Json(new { success = false, message = "La sala no está disponible en la fecha y horas seleccionadas." });
+            }
         }
 
     }
