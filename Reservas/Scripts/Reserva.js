@@ -134,16 +134,16 @@ function Reservar(nombre, ids, aperturaV, cierreV) {
             text: "Salon " + nombre + " Reservado",
             showConfirmButton: false,
         });
-        
+
         //crear reserva ****
-        
+
         $.ajax({
             url: '/Reservas/Create',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
             data: JSON.stringify({
-                nombreUsuario: "Usuario",
+                nombreUsuario: "Usuario02",//Tomar el usuario de la sesion
                 fecha: fecha,
                 horaInicio: tiempoInicio,
                 horaFin: tiempoCierre,
@@ -163,13 +163,36 @@ function Reservar(nombre, ids, aperturaV, cierreV) {
     } else {
         //**
     }
-    
+
 }
 //extraer numero de horas
 function extractHour(time) {
     var hours = time.hours;
     return hours;
 }
+
+
+$(document).ready(function () {
+
+    function filtroS() {
+        var inputValue = $("#filtro").val().toLowerCase(); // Valor del campo de texto, pasa a minuscula
+
+        $("#tableBody tr").filter(function () {
+
+            // buscar en todas las columnas
+            var textMatch = $(this).text().toLowerCase().indexOf(inputValue) > -1;
+
+            //mostrar coincidencias
+            $(this).toggle(textMatch);
+        });
+    }
+
+    // filtro basado en el campo de texto
+    $("#filtro").on("keyup", function () {
+        filtroS();
+    });
+
+});
 
 $(document).ready(function () {
 
@@ -184,7 +207,7 @@ $(document).ready(function () {
             sala.forEach(sala => {
                 //console.log(sala);
                 plantilla += `
-                        <tr class="align-middle">
+                        <tr class="align-middle" id="tablaFiltroTr">
                             <td class="text-center">${sala.nombreSala}</td>
                             <td class="text-center">${sala.capacidad}</td>
                             <td class="text-center">${sala.ubicacion}</td>

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Reservas.Models.Reserva>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.nombreSala)</th>
+            <th>@Html.DisplayNameFor(model => model.fecha)</th>
+            <th>@Html.DisplayNameFor(model => model.horaInicio)</th>
+            <th>@Html.DisplayNameFor(model => model.horaFin)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreUsuario)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reserva in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => reserva.nombreSala)</td>
+                <td>@Html.DisplayFor(modelItem => reserva.fecha)</td>
+                <td>@Html.DisplayFor(modelItem => reserva.horaInicio)</td>
+                <td>@Html.DisplayFor(modelItem => reserva.horaFin)</td>
+                <td>@Html.DisplayFor(modelItem => reserva.nombreUsuario)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -23,6 +23,52 @@ namespace Reservas.Controllers
             return View(db.Reservas.ToList());
         }
 
+        public ActionResult UsuarioReservas()
+        {
+            try
+            {
+                string usuarioP = "Usuario02"; // tomar usuario de la sesion
+
+                var hoy = DateTime.Now.Date;
+
+                //bdFunctions truncateTime elimina las horas de las fechas
+                var reservas = db.Reservas
+                    .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) >= hoy)
+                    .ToList();
+                return View(reservas); //retorna resultados filtrados
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Ocurrió un error al obtener las reservas: {ex.Message}";
+                return View(new List<Reserva>()); //lista Vacia
+            }
+        }
+
+        public ActionResult ObtenerReservas(string tipo)
+        {
+            DateTime hoy = DateTime.Now.Date;
+
+            string usuarioP = "Usuario02"; // tomar usuario de la sesion
+
+            List<Reserva> reservas = new List<Reserva>();
+
+            //dependiendo del parametro enviado devuelve las reservas pasadas o futuras
+            if (tipo == "pasado")
+            {
+                reservas = db.Reservas
+                    .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) < hoy).ToList();
+            }
+            else if (tipo == "futuro")
+            {
+                reservas = db.Reservas
+                    .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+            }
+
+            //vista parcial
+            return PartialView("_ReservasTabla", reservas);
+        }
+
+
         // GET: Reservas/Details/5
         public ActionResult Details(int? id)
         {
@@ -44,7 +90,7 @@ namespace Reservas.Controllers
         {
             if (reserva != null)
             {
-                
+
                 // Llamada al SP
                 int resultado = db.Database.SqlQuery<int>(
                     "EXEC SP_INSERTAR_RESERVA @nombreUsuario, @fecha ,@horaInicio, @horaFin, @nombreSala, @Idsala",
