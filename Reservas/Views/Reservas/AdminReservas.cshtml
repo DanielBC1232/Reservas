@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Reservas.Models.Reserva>
+
+@{
+    ViewBag.Title = "Reservas (Admin)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid d-flex justify-content-start">
+
+    <div class="col-3 ms-3">
+        <label for="selectUsuarios" class="form-label">Seleccione un usuario:</label>
+        <select id="selectUsuarios" class="form-select shadow-sm">
+            <option value="todos">Todos</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </div>
+    </div>
+
+
+    <div id="tablaReservas" class="mt-3">
+        <!-- aqui se cargará la tabla de reservas (vista parcial) -->
+    </div>
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+
+                // Función para cargar usuarios en el dropdown
+                function cargarUsuarios() {
+                    $.ajax({
+                        url: '/Reservas/ObtenerUsuarios',//get users
+                        method: 'GET',
+                        success: function (usuarios) {
+                            let options = '<option value="todos">Todos</option>';
+                            usuarios.forEach(usuario => {
+                                options += `<option value="${usuario.Nombre}">${usuario.Nombre}</option>`;
+                            });
+                            $("#selectUsuarios").html(options);
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                text: "Error al cargar los usuarios.",
+                            });
+                        }
+                    });
+                }
+
+                cargarUsuarios();
+
+                // Evento: cargar reservas según el usuario seleccionado
+                $("#selectUsuarios").on("change", function () {
+                    let usuarioSeleccionado = $(this).val();
+                    let tipo = usuarioSeleccionado === "todos"; // Si es "todos", tipo será true
+                    cargarReservas(usuarioSeleccionado, tipo);
+                });
+
+
+                //tipo true = todos los usuarios
+                //tipo false= usuario especifico
+
+
+
+                function cargarReservas(fetch, tipo) {
+                    console.log(fetch, tipo);
+                    $.ajax({
+                        url: '/Reservas/ObtenerReservasPorUsuario',
+                        method: 'GET',
+                        data: { usuario: fetch, tipo: tipo },
+                        success: function (html) {
+                            $("#tablaReservas").html(html); // Renderizar la vista parcial
+                        }
+                    });
+
+                }
+            });
+        </script>
+    }

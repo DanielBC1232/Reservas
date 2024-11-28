@@ -64,7 +64,7 @@ function verificarDisponibilidad(nombre, tiempoInicio, tiempoCierre, fecha, call
     });
 }
 
-function Reservar(nombre, ids, aperturaV, cierreV) {
+function ReservarBtn(nombre, ids, aperturaV, cierreV) {
     var tiempoInicio = $("#tiempoInicio").val();
     var tiempoCierre = $("#tiempoCierre").val();
     var fecha = $("#fecha").val();
@@ -77,20 +77,18 @@ function Reservar(nombre, ids, aperturaV, cierreV) {
     // verificar disponibilidad
     verificarDisponibilidad(nombre, tiempoInicio, tiempoCierre, fecha, function (isAvailable) {
         if (isAvailable) {
-            reservar(nombre, ids, fecha, tiempoInicio, tiempoCierre);
+            Reservar(nombre, ids, fecha, tiempoInicio, tiempoCierre);
         }
     });
 }
 
-
-function reservar(nombre, ids, fecha, tiempoInicio, tiempoCierre) {
+function Reservar(nombre, ids, fecha, tiempoInicio, tiempoCierre) {
     $.ajax({
         url: '/Reservas/Create',
         method: 'POST',
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify({
-            nombreUsuario: "Usuario02", // Cambiar por el usuario en sesión
             fecha: fecha,
             horaInicio: tiempoInicio,
             horaFin: tiempoCierre,
@@ -160,7 +158,7 @@ $(document).ready(function () {
                                 <input type="text" class="form-control" value="${sala.horaCierre.Hours}:${sala.horaCierre.Minutes.toString().padStart(2, '0')}" readonly />
                             </td>
                             <td>
-                           <button class="btn btn-sm btn-primary" onclick="Reservar('${sala.nombreSala}', '${sala.Idsala}', 
+                           <button class="btn btn-sm btn-primary" onclick="ReservarBtn('${sala.nombreSala}', '${sala.Idsala}', 
                             '${horaToMinutos(sala.horaApertura.Hours + ':' + sala.horaApertura.Minutes.toString().padStart(2, '0'))}',
                             '${horaToMinutos(sala.horaCierre.Hours + ':' + sala.horaCierre.Minutes.toString().padStart(2, '0'))}')">Reservar
                         </button>

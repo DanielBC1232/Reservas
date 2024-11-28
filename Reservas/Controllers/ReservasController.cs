@@ -23,11 +23,11 @@ namespace Reservas.Controllers
             return View(db.Reservas.ToList());
         }
 
-        public ActionResult UsuarioReservas()
+        public ActionResult UsuarioReservas(string Usuario)
         {
             try
             {
-                string usuarioP = "Usuario02"; // tomar usuario de la sesion
+                string usuarioP = "Usuario03"; // tomar usuario de la sesion
 
                 var hoy = DateTime.Now.Date;
 
@@ -44,24 +44,71 @@ namespace Reservas.Controllers
             }
         }
 
-        public ActionResult ObtenerReservas(string tipo)
+        public ActionResult AdminReservas(string usuario)
+        {
+            try
+            {
+                var hoy = DateTime.Now.Date;
+                //listar las reservas a futuro para cancelarlas
+                //bdFunctions truncateTime elimina las horas de las fechas
+                var reservas = db.Reservas
+                    .Where(s => DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+                return View(reservas); //retorna resultados filtrados
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Ocurrió un error al obtener las reservas: {ex.Message}";
+                return View(new List<Reserva>()); //lista Vacia
+            }
+        }
+
+        public ActionResult ObtenerReservas(string param)
         {
             DateTime hoy = DateTime.Now.Date;
 
             string usuarioP = "Usuario02"; // tomar usuario de la sesion
+            //string usuarioP = "admin"; // admin
+
 
             List<Reserva> reservas = new List<Reserva>();
 
             //dependiendo del parametro enviado devuelve las reservas pasadas o futuras
-            if (tipo == "pasado")
+            if (param == "pasado")
             {
                 reservas = db.Reservas
                     .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) < hoy).ToList();
             }
-            else if (tipo == "futuro")
+            else if (param == "futuro")
             {
                 reservas = db.Reservas
                     .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+            }
+
+            //vista parcial
+            return PartialView("_ReservasTabla", reservas);
+        }
+
+        public ActionResult ObtenerReservasPorUsuario(string usuario, bool tipo)
+        {
+            DateTime hoy = DateTime.Now.Date;
+
+            //tipo true = todos los usuarios
+            //tipo false= usuario especifico
+
+            List<Reserva> reservas = new List<Reserva>();
+
+            if (tipo == true)
+            {
+                //listar todo
+                reservas = db.Reservas
+                    .Where(s => DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+            }
+            else
+            {
+                //buscar con usuario
+                reservas = db.Reservas
+                    .Where(s => s.nombreUsuario.StartsWith(usuario) && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+                return View(reservas);
             }
 
             //vista parcial
@@ -90,11 +137,11 @@ namespace Reservas.Controllers
         {
             if (reserva != null)
             {
-
+                string usuario="Usuario1232";//tomar de sesion
                 // Llamada al SP
                 int resultado = db.Database.SqlQuery<int>(
                     "EXEC SP_INSERTAR_RESERVA @nombreUsuario, @fecha ,@horaInicio, @horaFin, @nombreSala, @Idsala",
-                new SqlParameter("@nombreUsuario", reserva.nombreUsuario),
+                new SqlParameter("@nombreUsuario", usuario),
                 new SqlParameter("@fecha", reserva.fecha),
                 new SqlParameter("@horaInicio", reserva.horaInicio),
                 new SqlParameter("@horaFin", reserva.horaFin),
