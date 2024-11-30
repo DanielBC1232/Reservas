@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Reservas.Models.Reserva>
+
+@{
+    ViewBag.Title = "Reservas";
+}
+
+<h2>Reservas</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreSala)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreUsuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horaInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horaFin)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreSala)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreUsuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha.Date ,new { @type = "date", @class = "form-control", @readonly = "readonly" }))
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.horaInicio ,new{ @type = "time", @class = "form-control" , @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.horaFin ,new{ @type = "time", @class = "form-control" , @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.ActionLink("Editar","Edit", "Reservas", new { id=item.Idreserva }, new { @class = "btn btn-sm btn-primary m-2" })
+            @Html.ActionLink("Cancelar","Delete", "Reservas", new { id=item.Idreserva }, new { @class = "btn btn-sm btn-danger m-2" })
+        </td>
+    </tr>
+}
+
+</table>

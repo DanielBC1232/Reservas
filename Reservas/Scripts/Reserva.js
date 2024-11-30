@@ -14,7 +14,6 @@ function horaToMinutos(hora) {
     return horas * 60 + minutos;
 }
 
-
 function validarInputs(tiempoInicio, tiempoCierre, fecha, aperturaV, cierreV) {
     if (!tiempoInicio || !tiempoCierre || !fecha) {
         Swal.fire({ icon: "error", text: "Campos de rango de horas o fecha vacíos." });
@@ -31,9 +30,9 @@ function validarInputs(tiempoInicio, tiempoCierre, fecha, aperturaV, cierreV) {
         return false;
     }
 
-    let fechaActual = new Date();
-    let fechaReserva = new Date(fecha);
-    if (fechaReserva <= fechaActual) {
+    let fechaActual = moment().format("YYYY-MM-DD");
+
+    if (fecha < fechaActual) {
         Swal.fire({ icon: "error", text: "No puedes reservar en una fecha pasada." });
         return false;
     }

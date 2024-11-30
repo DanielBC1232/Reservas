@@ -3,6 +3,8 @@
     ViewBag.Title = "Reservar";
 }
 @Html.ActionLink("Ver reservas", "UsuarioReservas", "Reservas")
+@Html.ActionLink("Ver reservas (Admin)", "AdminReservas", "Reservas")
+@Html.ActionLink("listado reservas (Admin)", "Reservas", "Reservas")
 
 <div class="d-flex bg-white border border-primary rounded-3 pb-4 ps-2 row align-items-center align-items-baseline">
 
@@ -22,7 +24,7 @@
     <div class="col">
         <h4 class="text-primary py-3">Fecha</h4>
         <div class="col-4 d-flex">
-            <input type="date" class="form-control me-2" id="fecha" />
+            <input type="date" class="form-control me-2" id="fecha" value="" />
         </div>
     </div>
 
@@ -54,6 +56,6 @@
 </table>
 
 
-
+<script src="~/Scripts/moment.min.js"></script>
 <script src="~/Scripts/jquery-3.7.1.min.js"></script>
 <script src="~/Scripts/Reserva.js"></script>

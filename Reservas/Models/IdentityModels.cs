@@ -29,5 +29,9 @@ namespace Reservas.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Reservas.Models.Reserva> Reservas { get; set; }
+
+        public System.Data.Entity.DbSet<Reservas.Models.Sala> Salas { get; set; }
     }
 }

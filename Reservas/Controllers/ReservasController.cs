@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
-using System.Web.Http;
+
 using System.Web.Mvc;
 using Reservas.Models;
 
@@ -23,11 +23,17 @@ namespace Reservas.Controllers
             return View(db.Reservas.ToList());
         }
 
+        public ActionResult Reservas()
+        {
+            return View(db.Reservas.ToList());
+        }
+
+
         public ActionResult UsuarioReservas(string Usuario)
         {
             try
             {
-                string usuarioP = "Usuario03"; // tomar usuario de la sesion
+                string usuarioP = "Usuario02"; // tomar usuario de la sesion
 
                 var hoy = DateTime.Now.Date;
 
@@ -62,7 +68,7 @@ namespace Reservas.Controllers
             }
         }
 
-        public ActionResult ObtenerReservas(string param)
+        public ActionResult ObtenerReservas(string tipo)
         {
             DateTime hoy = DateTime.Now.Date;
 
@@ -73,46 +79,57 @@ namespace Reservas.Controllers
             List<Reserva> reservas = new List<Reserva>();
 
             //dependiendo del parametro enviado devuelve las reservas pasadas o futuras
-            if (param == "pasado")
+            if (tipo == "pasado")
             {
                 reservas = db.Reservas
-                    .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) < hoy).ToList();
+                    .Where(s => s.nombreUsuario.ToLower() == usuarioP.ToLower() && DbFunctions.TruncateTime(s.fecha) < hoy).ToList();
             }
-            else if (param == "futuro")
+            else if (tipo == "futuro")
             {
                 reservas = db.Reservas
-                    .Where(s => s.nombreUsuario == usuarioP && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+                    .Where(s => s.nombreUsuario.ToLower() == usuarioP.ToLower() && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
             }
 
             //vista parcial
             return PartialView("_ReservasTabla", reservas);
         }
 
-        public ActionResult ObtenerReservasPorUsuario(string usuario, bool tipo)
+        public ActionResult ObtenerReservasPorUsuario(string usuario)
         {
             DateTime hoy = DateTime.Now.Date;
 
-            //tipo true = todos los usuarios
-            //tipo false= usuario especifico
-
             List<Reserva> reservas = new List<Reserva>();
 
-            if (tipo == true)
+            if (usuario == "todos")
             {
                 //listar todo
                 reservas = db.Reservas
                     .Where(s => DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
             }
-            else
+            else if (usuario != "todos")
             {
                 //buscar con usuario
                 reservas = db.Reservas
-                    .Where(s => s.nombreUsuario.StartsWith(usuario) && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
-                return View(reservas);
+                    .Where(s => s.nombreUsuario.ToLower() == usuario.ToLower() && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
+
+
             }
 
             //vista parcial
             return PartialView("_ReservasTabla", reservas);
+        }
+
+        //cambiar por listado de usuarios
+        public ActionResult ObtenerUsuarios()
+        {
+
+            List<dynamic> usuarios = new List<dynamic>
+        {
+            new {Nombre = "Usuario02"},
+            new {Nombre = "Usuario1232"},
+        };
+            return Json(usuarios, JsonRequestBehavior.AllowGet);
+            //return View(usuario);
         }
 
 
@@ -137,7 +154,7 @@ namespace Reservas.Controllers
         {
             if (reserva != null)
             {
-                string usuario="Usuario1232";//tomar de sesion
+                string usuario = "Usuario1232";//tomar de sesion
                 // Llamada al SP
                 int resultado = db.Database.SqlQuery<int>(
                     "EXEC SP_INSERTAR_RESERVA @nombreUsuario, @fecha ,@horaInicio, @horaFin, @nombreSala, @Idsala",
@@ -178,7 +195,8 @@ namespace Reservas.Controllers
             return View(reserva);
         }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Idr,nombreUsuario,fecha,horaInicio,horaFin,nombreSala")] Reserva reserva)
         {
             if (ModelState.IsValid)
@@ -189,6 +207,7 @@ namespace Reservas.Controllers
             }
             return View(reserva);
         }
+        
 
         // GET: Reservas/Delete/5
         public ActionResult Delete(int? id)
@@ -206,7 +225,8 @@ namespace Reservas.Controllers
         }
 
         // POST: Reservas/Delete/5
-        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Reserva reserva = db.Reservas.Find(id);
