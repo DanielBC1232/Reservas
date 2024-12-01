@@ -179,7 +179,7 @@ namespace Reservas.Controllers
             return Json(new { success = false, message = "Los datos de la reserva no son válidos.", errors = errors });
         }
 
-
+        /*
         // GET: Reservas/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -191,48 +191,71 @@ namespace Reservas.Controllers
             if (reserva == null)
             {
                 return HttpNotFound();
-            }
+            };
+
             return View(reserva);
+        }*/
+
+        public ActionResult EditPreload(int id)
+        {
+
+            var reserva = db.Reservas.Find(id);
+
+            var result = new
+            {
+                Idreserva = reserva.Idreserva,
+                nombreUsuario = reserva.nombreUsuario,
+                fecha = reserva.fecha.ToString("yyyy-MM-dd"), // Aquí formateamos la fecha
+                horaInicio = reserva.horaInicio.ToString(@"hh\:mm"), // O la lógica que necesites para la hora
+                horaFin = reserva.horaFin.ToString(@"hh\:mm"),
+                nombreSala = reserva.nombreSala,
+                Idsala = reserva.Idsala
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Idr,nombreUsuario,fecha,horaInicio,horaFin,nombreSala")] Reserva reserva)
+        //[HttpPost]
+        public ActionResult Edit([Bind(Include = "Idreserva,nombreUsuario,fecha,horaInicio,horaFin,nombreSala,Idsala")] Reserva reserva)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(reserva).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Entry(reserva).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { success = true, message = "Reserva actualizada correctamente." });
+                }
+                catch (Exception ex)
+                {
+                    //return Json(new { success = false, message = $"Error al guardar: {ex.Message}" });
+                    var innerExceptionMessage = ex.InnerException;
+                    return Json(new { success = false, message = $"Error al guardar: {innerExceptionMessage}" });
+                }
             }
-            return View(reserva);
-        }
-        
 
-        // GET: Reservas/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Reserva reserva = db.Reservas.Find(id);
-            if (reserva == null)
-            {
-                return HttpNotFound();
-            }
-            return View(reserva);
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            return Json(new { success = false, message = "Datos inválidos.", errors });
         }
 
-        // POST: Reservas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+
+        [HttpPost]
+        public ActionResult Delete(int id)
         {
-            Reserva reserva = db.Reservas.Find(id);
-            db.Reservas.Remove(reserva);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                var reserva = db.Reservas.Find(id);
+                if (reserva != null)
+                {
+                    db.Reservas.Remove(reserva);
+                    db.SaveChanges();
+                    return Json(new { success = true, message = "Reserva eliminada correctamente." });
+                }
+                return Json(new { success = false, message = "Reserva no encontrada." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error al eliminar: {ex.Message}" });
+            }
         }
 
         protected override void Dispose(bool disposing)

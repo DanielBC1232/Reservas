@@ -26,28 +26,203 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombreSala)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombreUsuario)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha.Date ,new { @type = "date", @class = "form-control", @readonly = "readonly" }))
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.horaInicio ,new{ @type = "time", @class = "form-control" , @readonly = "readonly" })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.horaFin ,new{ @type = "time", @class = "form-control" , @readonly = "readonly" })
-        </td>
-        <td>
-            @Html.ActionLink("Editar","Edit", "Reservas", new { id=item.Idreserva }, new { @class = "btn btn-sm btn-primary m-2" })
-            @Html.ActionLink("Cancelar","Delete", "Reservas", new { id=item.Idreserva }, new { @class = "btn btn-sm btn-danger m-2" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombreSala)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha.Date, new { @type = "date", @class = "form-control", @readonly = "readonly" }))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horaInicio, new { @type = "time", @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horaFin, new { @type = "time", @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                <button type="button" id=@item.Idreserva onclick=edit(@item.Idreserva) class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
+                    Editar
+                </button>
+                <button type="button" id=@item.Idreserva onclick=cancel(@item.Idreserva) class="btn btn-danger btn-sm">
+                    Cancelar
+                </button>
+            </td>
+        </tr>
+    }
 
 </table>
+
+<!--  Modal editar -->
+<div class="modal" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Editar Reserva</h4>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="nombreUsuario" class="control-label col-md-4">Nombre de Usuario</label>
+                        <div class="col-md-10">
+                            <input type="text" id="nombreUsuario" name="nombreUsuario" class="form-control" readonly />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha" class="control-label col-md-2">Fecha</label>
+                        <div class="col-md-10">
+                            <input type="date" id="fecha" name="fecha" class="form-control" />
+                            <span class="text-danger" id="validationFecha"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horaInicio" class="control-label col-md-2">Hora Inicio</label>
+                        <div class="col-md-10">
+                            <input type="time" id="horaInicio" name="horaInicio" class="form-control" />
+                            <span class="text-danger" id="validationHoraInicio"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horaFin" class="control-label col-md-2">Hora Fin</label>
+                        <div class="col-md-10">
+                            <input type="time" id="horaFin" name="horaFin" class="form-control" />
+                            <span class="text-danger" id="validationHoraFin"></span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="nombreSala" value="">
+                    <input type="hidden" id="Idreserva" value="">
+                    <input type="hidden" id="Idsala" value="">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 my-3">
+                            <input type="submit" value="Guardar" onclick="GuardarCambios()" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/moment.min.js"></script>
+    <script>
+
+        function edit(idReserva) {
+
+            $.ajax({
+                url: '/Reservas/EditPreload',
+                method: 'GET',
+                dataType: 'json',
+                data: { id: idReserva },
+                success: function (objeto) {
+
+                    //precarga en input
+                    $("#Idreserva").val(idReserva);
+                    $("#nombreUsuario").val(objeto.nombreUsuario);
+                    $("#fecha").val(objeto.fecha);
+                    $("#horaInicio").val(objeto.horaInicio);
+                    $("#horaFin").val(objeto.horaFin);
+                    $("#nombreSala").val(objeto.nombreSala);
+                    $("#Idsala").val(objeto.Idsala);
+
+                }
+
+            });
+        }
+
+        function GuardarCambios() {
+
+            var Data = {
+                Idreserva: $("#Idreserva").val(),
+                nombreUsuario: $("#nombreUsuario").val(),
+                fecha: $("#fecha").val(),
+                horaInicio: $("#horaInicio").val(),
+                horaFin: $("#horaFin").val(),
+                nombreSala: $("#nombreSala").val(),
+                Idsala: $("#Idsala").val()
+            }
+
+            event.preventDefault();
+
+            $.ajax({
+                url: '/Reservas/Edit',
+                method: 'POST',
+                dataType: 'json',
+                data: Data,
+                success: function (response) {
+                    console.log(response.message);
+                    Swal.fire({
+                        icon: "success", text: `Reserva actualizada`, willClose: () => {
+                            location.reload();
+                        }
+                    });
+                }
+
+
+            });
+        }
+
+
+        function cancel(idReserva) {
+            // Mostrar el modal de confirmación con Swal.fire
+            Swal.fire({
+                title: '¿Estás seguro de eliminar esta reserva?',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Atrás',
+                confirmButtonText: 'Cancelar Reserva',
+                customClass: {
+                    confirmButton: 'btn btn-danger',   // Botón "Sí, eliminar" con color rojo
+                    cancelButton: 'btn btn-secondary'  // Botón "Cancelar" con color gris
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Reservas/Delete',
+                        method: 'POST',
+                        data: { id: idReserva }, 
+                        success: function (response) {
+                            if (response.success) {
+                                // Mostrar mensaje de éxito
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Reserva eliminada',
+                                    text: 'La reserva fue eliminada correctamente.',
+                                    timer: 2000,
+                                    willClose: () => {
+                                        location.reload();
+                                    }
+                                });
+                            } else {
+                                // error en la eliminación
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message || 'Ocurrió un error al eliminar la reserva.'
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+
+}
