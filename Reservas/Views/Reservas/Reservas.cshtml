@@ -4,59 +4,52 @@
     ViewBag.Title = "Reservas";
 }
 
-<h2>Reservas</h2>
+<h2 class="display-6 text-primary">Modificar Reservas</h2>
+<hr class="text-bg-primary">
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.nombreSala)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.nombreUsuario)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.horaInicio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.horaFin)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<table class="table table-borderless shadow-sm rounded-3 mb-5">
+    <thead class="bg-light">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombreSala)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombreUsuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fecha.Date, new { @type = "date", @class = "form-control", @readonly = "readonly" }))
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.horaInicio, new { @type = "time", @class = "form-control", @readonly = "readonly" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.horaFin, new { @type = "time", @class = "form-control", @readonly = "readonly" })
-            </td>
-            <td>
-                <button type="button" id=@item.Idreserva onclick=edit(@item.Idreserva) class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
-                    Editar
-                </button>
-                <button type="button" id=@item.Idreserva onclick=cancel(@item.Idreserva) class="btn btn-danger btn-sm">
-                    Cancelar
-                </button>
-            </td>
+            <th>Nombre de la Sala</th>
+            <th>Nombre del Usuario</th>
+            <th>Fecha</th>
+            <th>Hora de Inicio</th>
+            <th>Hora de Fin</th>
+            <th>Acciones</th>
         </tr>
-    }
-
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreSala)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fecha.Date, new { @type = "date", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.horaInicio, new { @type = "time", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.horaFin, new { @type = "time", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td>
+                    <button type="button" id="@item.Idreserva" onclick="edit(@item.Idreserva)" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
+                        Editar
+                    </button>
+                    <button type="button" id="@item.Idreserva" onclick="cancel(@item.Idreserva)" class="btn btn-danger btn-sm">
+                        Cancelar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
-
 <!--  Modal editar -->
 <div class="modal" id="editModal">
     <div class="modal-dialog">
@@ -196,7 +189,7 @@
                     $.ajax({
                         url: '/Reservas/Delete',
                         method: 'POST',
-                        data: { id: idReserva }, 
+                        data: { id: idReserva },
                         success: function (response) {
                             if (response.success) {
                                 // Mostrar mensaje de éxito

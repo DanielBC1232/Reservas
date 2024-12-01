@@ -16,54 +16,23 @@
         <h4>Sala</h4>
         <hr />
         <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.nombreSala)
-            </dt>
+            <dt>Nombre de la Sala</dt>
+            <dd>@Html.DisplayFor(model => model.nombreSala)</dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.nombreSala)
-            </dd>
+            <dt>Capacidad</dt>
+            <dd>@Html.DisplayFor(model => model.capacidad)</dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.capacidad)
-            </dt>
+            <dt>Ubicación</dt>
+            <dd>@Html.DisplayFor(model => model.ubicacion)</dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.capacidad)
-            </dd>
+            <dt>Disponibilidad de Equipos</dt>
+            <dd>@Html.DisplayFor(model => model.disponibilidadEquipo)</dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.ubicacion)
-            </dt>
+            <dt>Hora de Apertura</dt>
+            <dd>@Html.DisplayFor(model => model.horaApertura)</dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.ubicacion)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.disponibilidadEquipo)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.disponibilidadEquipo)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.horaApertura)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.horaApertura)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.horaCierre)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.horaCierre)
-            </dd>
-
+            <dt>Hora de Cierre</dt>
+            <dd>@Html.DisplayFor(model => model.horaCierre)</dd>
         </dl>
     </div>
     <p>

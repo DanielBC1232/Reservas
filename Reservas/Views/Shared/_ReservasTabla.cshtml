@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Reservas.Models.Reserva>
 
-<table class="table">
-    <thead>
+<table class="table table-borderless table-hover rounded-3 mb-5">
+    <thead class="">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.nombreSala)</th>
-            <th>@Html.DisplayNameFor(model => model.fecha)</th>
-            <th>@Html.DisplayNameFor(model => model.horaInicio)</th>
-            <th>@Html.DisplayNameFor(model => model.horaFin)</th>
-            <th>@Html.DisplayNameFor(model => model.nombreUsuario)</th>
+            <th>Nombre de la Sala</th>
+            <th>Fecha</th>
+            <th>Hora de Inicio</th>
+            <th>Hora de Fin</th>
+            <th>Nombre del Usuario</th>
         </tr>
     </thead>
     <tbody>
@@ -23,4 +23,3 @@
         }
     </tbody>
 </table>
-

@@ -179,22 +179,6 @@ namespace Reservas.Controllers
             return Json(new { success = false, message = "Los datos de la reserva no son válidos.", errors = errors });
         }
 
-        /*
-        // GET: Reservas/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Reserva reserva = db.Reservas.Find(id);
-            if (reserva == null)
-            {
-                return HttpNotFound();
-            };
-
-            return View(reserva);
-        }*/
 
         public ActionResult EditPreload(int id)
         {

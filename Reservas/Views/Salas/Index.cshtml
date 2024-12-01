@@ -4,60 +4,60 @@
     ViewBag.Title = "Index";
 }
 
+<div class="container my-4">
+    @Html.ActionLink("Agregar Sala", "Create", null, new { @class = "btn btn-sm btn-primary mb-2" })
+    <hr class="text-bg-primary">
 
-@Html.ActionLink("Agregar Sala", "Create", null, new { @class = "btn btn-sm btn-primary mb-2" })
-<hr>
-
-@if (Model != null && Model.Any())
-{
-
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>Nombre de la Sala</th>
-                <th>Capacidad</th>
-                <th>Ubicación</th>
-                <th>Disponibilidad de Equipos</th>
-                <th>Hora de Apertura</th>
-                <th>Hora de Cierre</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr class="align-middle">
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.nombreSala)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.capacidad)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.ubicacion)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.disponibilidadEquipo)
-                    </td>
-                    <td class="text-center">
-                        @Html.TextBoxFor(modelItem => item.horaApertura, new { @type = "time", @class = "form-control" , @readonly = "readonly" })
-                    </td>
-                    <td class="text-center">
-                        @Html.TextBoxFor(modelItem => item.horaCierre, new { @type = "time", @class = "form-control", @readonly = "readonly" })
-                    </td>
-                    <td class="text-center d-grid ">
-                        @Html.ActionLink("✏️ Editar", "Edit", new { id = item.Idsala }, new { @class = "btn btn-sm btn-primary m-2" })
-                        @Html.ActionLink("🔍 Detalles", "Details", new { id = item.Idsala }, new { @class = "btn btn-sm btn-info m-2" })
-                        @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = item.Idsala }, new { @class = "btn btn-sm btn-danger m-2" })
-                    </td>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped table-bordered shadow-sm rounded-3">
+            <thead class="bg-light">
+                <tr>
+                    <th>Nombre de la Sala</th>
+                    <th>Capacidad</th>
+                    <th>Ubicación</th>
+                    <th>Disponibilidad de Equipos</th>
+                    <th>Hora de Apertura</th>
+                    <th>Hora de Cierre</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-warning text-center" role="alert">
-        No se encontraron resultados.
-    </div>
-}
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="align-middle">
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.nombreSala)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.capacidad)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ubicacion)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.disponibilidadEquipo)
+                        </td>
+                        <td class="text-center">
+                            @Html.TextBoxFor(modelItem => item.horaApertura, new { @type = "time", @class = "form-control", @readonly = "readonly" })
+                        </td>
+                        <td class="text-center">
+                            @Html.TextBoxFor(modelItem => item.horaCierre, new { @type = "time", @class = "form-control", @readonly = "readonly" })
+                        </td>
+                        <td class="text-center d-grid">
+                            @Html.ActionLink("✏️ Editar", "Edit", new { id = item.Idsala }, new { @class = "btn btn-sm btn-primary m-2" })
+                            @Html.ActionLink("🔍 Detalles", "Details", new { id = item.Idsala }, new { @class = "btn btn-sm btn-info m-2" })
+                            @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = item.Idsala }, new { @class = "btn btn-sm btn-danger m-2" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            No se encontraron resultados.
+        </div>
+    }
+</div>
