@@ -10,7 +10,7 @@ namespace Reservas.Controllers
 {
     public class SalasController : Controller
     {
-        private ReservaContext db = new ReservaContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Salas
         public ActionResult Index()

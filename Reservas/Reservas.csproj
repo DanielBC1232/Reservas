@@ -210,12 +210,15 @@
     <Compile Include="Migrations\202412041548310_Second.Designer.cs">
       <DependentUpon>202412041548310_Second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202412041710295_Identity1.cs" />
+    <Compile Include="Migrations\202412041710295_Identity1.Designer.cs">
+      <DependentUpon>202412041710295_Identity1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Reserva.cs" />
-    <Compile Include="Models\ReservaContext.cs" />
     <Compile Include="Models\Sala.cs" />
     <Compile Include="Models\SalaReserva.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -343,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202412041548310_Second.resx">
       <DependentUpon>202412041548310_Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202412041710295_Identity1.resx">
+      <DependentUpon>202412041710295_Identity1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

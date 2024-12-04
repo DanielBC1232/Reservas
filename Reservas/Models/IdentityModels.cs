@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,8 +20,7 @@ namespace Reservas.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        public ApplicationDbContext():base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 
@@ -29,8 +29,10 @@ namespace Reservas.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<Reservas.Models.Reserva> Reservas { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<Sala> Salas { get; set; }
+        public DbSet<SalaReserva> SalaReservas { get; set; }
 
-        public System.Data.Entity.DbSet<Reservas.Models.Sala> Salas { get; set; }
+
     }
 }

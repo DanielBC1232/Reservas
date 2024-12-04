@@ -7,7 +7,7 @@ namespace Reservas.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly ReservaContext db = new ReservaContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Dashboard
         public ActionResult Dashboard()
