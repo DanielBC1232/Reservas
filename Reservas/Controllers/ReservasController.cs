@@ -163,7 +163,7 @@ namespace Reservas.Controllers
                 new SqlParameter("@idSala", reserva.Idsala) // FK
                 ).FirstOrDefault();
 
-                // Si el resultado es mayor que 0, se asume que la reserva se creó correctamente
+                // Si el resultado es mayor que 0, se asume que la reserva se creo correctamente
                 if (resultado > 0)
                 {
                     return Json(new { success = true, message = "Reserva creada exitosamente.", reservaId = resultado });
@@ -186,8 +186,8 @@ namespace Reservas.Controllers
             {
                 Idreserva = reserva.Idreserva,
                 nombreUsuario = reserva.nombreUsuario,
-                fecha = reserva.fecha.ToString("yyyy-MM-dd"), // Aquí formateamos la fecha
-                horaInicio = reserva.horaInicio.ToString(@"hh\:mm"), // O la lógica que necesites para la hora
+                fecha = reserva.fecha.ToString("yyyy-MM-dd"), // formateo de fecha
+                horaInicio = reserva.horaInicio.ToString(@"hh\:mm"),
                 horaFin = reserva.horaFin.ToString(@"hh\:mm"),
                 nombreSala = reserva.nombreSala,
                 Idsala = reserva.Idsala

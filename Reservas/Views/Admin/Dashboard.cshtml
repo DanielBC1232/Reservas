@@ -10,8 +10,8 @@
 <!-- Contenido principal -->
 <div class="container-fluid fade-inY">
 
-    <!-- Contenido principal -->
-    <div class="row mb-3">
+    <!-- Graficos -->
+    <div class="row mb-2">
         <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-8 me-3">
             <div id="barras" style="width:100%; height:400px;"></div>
         </div>
@@ -21,24 +21,22 @@
         </div>
     </div>
 
+    <div class="row mb-2">
 
-    <div class="row">
-
-        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-3">
-            <div id="main2" style="width:50%; height:50px;"></div>
+        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col ms-3">
+            <div id="horas" style="width:100%; height:400px;"></div>
         </div>
-
-        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-8 ms-3">
-            <div id="main" style="width:100%; height:400px;"></div>
-        </div>
-
     </div>
+    <div class="rounded-3 p-4 rounded shadow-sm mb-4 col">
+        <div id="main" style="width:100%; height:500px;"></div>
+    </div>
+
+
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
-
-<script src="/Scripts/jquery-3.7.1.js"></script>
+<script src="/Scripts/jquery-3.7.1.min.js"></script>
 <script src="~/Scripts/moment.js"></script>
 
 <script>
@@ -75,14 +73,16 @@
 
                 graficoElipse(formattedData);
 
+                graficoHoras(formattedData);
 
+                graficoLineas(formattedData);
 
             }
         });
 
         function graficoBarra(data) {
 
-            //console.log(data)
+            console.log(data)
 
             //-----------------------------------------
 
@@ -113,7 +113,7 @@
                 },
                 xAxis: {
                     type: 'category',
-                    data: salas  // Las salas en el eje x
+                    data: salas  // las salas en el eje x
                 },
                 yAxis: {
                     type: 'value'
@@ -128,7 +128,7 @@
             };
 
             // Usar el gráfico de ECharts
-            var chart = echarts.init(document.getElementById('barras'));  // Asumiendo que tienes un div con id="container"
+            var chart = echarts.init(document.getElementById('barras'));
             chart.setOption(option);
 
             //---------------------------------
@@ -139,7 +139,6 @@
 
             //------------------
 
-            // Contar el número de reservas por sala
             const reservasPorSala = {};
             data.forEach(function (item) {
                 if (reservasPorSala[item.SalaNombre]) {
@@ -149,16 +148,13 @@
                 }
             });
 
-            // Preparar datos para el gráfico
             const chartData = Object.keys(reservasPorSala).map(sala => ({
                 name: sala,
                 value: reservasPorSala[sala]
             }));
 
-            // Inicializar el gráfico
             const chart = echarts.init(document.getElementById('pastel'));
 
-            // Configuración del gráfico
             const option = {
                 tooltip: {
                     trigger: 'item',
@@ -201,14 +197,146 @@
             // Renderizar el gráfico
             chart.setOption(option);
 
-
-
             //------------------
 
+        }
+
+        function graficoHoras(data) {
+
+            //-------------------
+
+            //Grafico de 0 a 23 horas
+            // Objeto por hora (hora de inicio) porque es mas importante que el de Hora fin
+            const reservasPorHora = Array(24).fill(0);
+
+            data.forEach(item => {
+                // extraer la hora de inicio de la reserva
+                const horaInicio = item.ReservaHoraInicio.Hours;
+                if (horaInicio >= 0 && horaInicio < 24) {
+                    reservasPorHora[horaInicio]++;
+                }
+            });
+
+            const chart = echarts.init(document.getElementById('horas'));
+            const option = {
+                title: {
+                    text: 'Horas mas demandadas'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: Array.from({ length: 24 }, (_, i) => `${i}:00`), // horas de 00:00 a 23:00
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '(Hora de inicio)',
+                        nameLocation: 'end'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Hora',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: reservasPorHora // datos
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+            //-------------------
 
         }
-    });
 
+        function graficoLineas(data) {
+
+            //-----------------
+            const reservasPorSala = {};
+            data.forEach(item => {
+                const fecha = item.ReservaFecha;
+                const sala = item.SalaNombre;
+
+                if (!reservasPorSala[sala]) {
+                    reservasPorSala[sala] = {};
+                }
+                reservasPorSala[sala][fecha] = (reservasPorSala[sala][fecha] || 0) + 1;
+            });
+
+            // Extraer las fechas unicas ordenadas
+            const fechasUnicas = [...new Set(data.map(item => item.ReservaFecha))].sort();
+
+            const datasetSource = [['Sala', ...fechasUnicas]];
+            Object.keys(reservasPorSala).forEach(sala => {
+                const fila = [sala];
+                fechasUnicas.forEach(fecha => {
+                    fila.push(reservasPorSala[sala][fecha] || 0);
+                });
+                datasetSource.push(fila);
+            });
+
+            const chart = echarts.init(document.getElementById('main'));
+
+            // Opciones del grafico
+            const option = {
+                legend: {
+                    top: 'bottom'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    showContent: true
+                },
+                dataset: {
+                    source: datasetSource
+                },
+                xAxis: {
+                    type: 'category',
+                    name: 'Fecha',
+                    nameLocation: 'middle',
+                    nameGap: 30
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Reservas',
+                    nameLocation: 'middle',
+                    nameGap: 50
+                },
+                grid: {
+                    top: '10%',
+                    left: '10%',
+                    right: '10%',
+                    bottom: '15%'
+                },
+                series: datasetSource.slice(1).map(() => ({
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                }))
+            };
+            chart.setOption(option);
+
+            //-----------------
+
+        }
+
+    });
 
 
 </script>

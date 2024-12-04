@@ -76,8 +76,6 @@ namespace Reservas.Controllers
         }
 
         // POST: Salas/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Idsala,nombreSala,capacidad,ubicacion,disponibilidadEquipo,horaApertura,horaCierre")] Sala sala)
@@ -132,8 +130,6 @@ namespace Reservas.Controllers
             // Convertir horaInicio y horaCierre a TimeSpan
             TimeSpan horaInicioTS = TimeSpan.Parse(horaInicio);
             TimeSpan horaCierreTS = TimeSpan.Parse(horaCierre);
-
-            //DateTime fechaReserva = DateTime.Parse(fecha);
 
             // Llamar al SP para verificar disponibilidad
             int resultado = db.Database.SqlQuery<int>(
