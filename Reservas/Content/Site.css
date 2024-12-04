@@ -12,9 +12,54 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+    height: 550px
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+    background-color: #f1f1f1;
+    height: 100%;
+}
+
+/* On small screens, set height to 'auto' for the grid */
+@media screen and (max-width: 767px) {
+    .row.content {
+        height: auto;
+    }
+}
+
+@keyframes fadeInX {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-inX {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeInY {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);/
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-inY {
+    opacity: 0;
+    animation: fadeInY 0.5s ease-in forwards;
 }

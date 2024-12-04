@@ -1,0 +1,214 @@
+﻿
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+<hr>
+
+<!-- Contenido principal -->
+<div class="container-fluid fade-inY">
+
+    <!-- Contenido principal -->
+    <div class="row mb-3">
+        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-8 me-3">
+            <div id="barras" style="width:100%; height:400px;"></div>
+        </div>
+
+        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-3">
+            <div id="pastel" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-3">
+            <div id="main2" style="width:50%; height:50px;"></div>
+        </div>
+
+        <div class="rounded-3 p-4 rounded shadow-sm mb-4 col col-8 ms-3">
+            <div id="main" style="width:100%; height:400px;"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+
+<script src="/Scripts/jquery-3.7.1.js"></script>
+<script src="~/Scripts/moment.js"></script>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Admin/GetData',
+            method: 'GET',
+            dataType: 'json',
+            success: function (res) {
+
+                // Convertir cada fecha con moment.js
+                var formattedData = res.map(function (item) {
+                    // Convertir la fecha de cada elemento
+                    var formattedFecha = moment(item.ReservaFecha).format('YYYY-MM-DD');
+
+                    // Devolver el item con la fecha convertida
+                    return {
+                        SalaNombre: item.SalaNombre,
+                        Capacidad: item.Capacidad,
+                        Ubicacion: item.Ubicacion,
+                        DisponibilidadEquipo: item.DisponibilidadEquipo,
+                        HoraApertura: item.HoraApertura,
+                        HoraCierre: item.HoraCierre,
+                        ReservaFecha: formattedFecha,
+                        ReservaHoraInicio: item.ReservaHoraInicio,
+                        ReservaHoraFin: item.ReservaHoraFin
+                    };
+                });
+
+                graficoBarra(formattedData);
+
+                graficoElipse(formattedData);
+
+
+
+            }
+        });
+
+        function graficoBarra(data) {
+
+            //console.log(data)
+
+            //-----------------------------------------
+
+            // Contar el numero de reservas por sala
+            var reservasPorSala = {};
+
+            data.forEach(function (item) {
+                //por cada sala que existe sumar 1 al contador
+                if (reservasPorSala[item.SalaNombre]) {
+                    reservasPorSala[item.SalaNombre]++;
+                } else {
+                    //primera lectura agregar 1 al contador como arranque
+                    reservasPorSala[item.SalaNombre] = 1;
+                }
+            });
+
+            // Preparar datos para el grafico
+            var salas = Object.keys(reservasPorSala);  // Las salas (llaves del objeto)
+            var reservasCount = Object.values(reservasPorSala);  // El conteo de reservas por cada sala (valores de cada llave)
+
+            var option = {
+                title: {
+                    text: 'Contador de Reservas por Sala'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['Reservas']
+                },
+                xAxis: {
+                    type: 'category',
+                    data: salas  // Las salas en el eje x
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'Reservas',
+                        type: 'bar',
+                        data: reservasCount  // El conteo de reservas por cada sala
+                    }
+                ]
+            };
+
+            // Usar el gráfico de ECharts
+            var chart = echarts.init(document.getElementById('barras'));  // Asumiendo que tienes un div con id="container"
+            chart.setOption(option);
+
+            //---------------------------------
+
+        }
+
+        function graficoElipse(data) {
+
+            //------------------
+
+            // Contar el número de reservas por sala
+            const reservasPorSala = {};
+            data.forEach(function (item) {
+                if (reservasPorSala[item.SalaNombre]) {
+                    reservasPorSala[item.SalaNombre]++;
+                } else {
+                    reservasPorSala[item.SalaNombre] = 1;
+                }
+            });
+
+            // Preparar datos para el gráfico
+            const chartData = Object.keys(reservasPorSala).map(sala => ({
+                name: sala,
+                value: reservasPorSala[sala]
+            }));
+
+            // Inicializar el gráfico
+            const chart = echarts.init(document.getElementById('pastel'));
+
+            // Configuración del gráfico
+            const option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
+                series: [
+                    {
+                        name: 'Uso de Salas',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 20,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: chartData
+                    }
+                ]
+            };
+
+            // Renderizar el gráfico
+            chart.setOption(option);
+
+
+
+            //------------------
+
+
+        }
+    });
+
+
+
+</script>

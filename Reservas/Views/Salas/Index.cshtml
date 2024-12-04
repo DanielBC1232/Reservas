@@ -10,7 +10,7 @@
 
     @if (Model != null && Model.Any())
     {
-        <table class="table table-striped table-bordered shadow-sm rounded-3">
+        <table class="table table-striped table-bordered shadow-sm rounded-3 fade-inY">
             <thead class="bg-light">
                 <tr>
                     <th>Nombre de la Sala</th>
@@ -46,7 +46,7 @@
                         </td>
                         <td class="text-center d-grid">
                             @Html.ActionLink("✏️ Editar", "Edit", new { id = item.Idsala }, new { @class = "btn btn-sm btn-primary m-2" })
-                            @Html.ActionLink("🔍 Detalles", "Details", new { id = item.Idsala }, new { @class = "btn btn-sm btn-info m-2" })
+                            @*@Html.ActionLink("🔍 Detalles", "Details", new { id = item.Idsala }, new { @class = "btn btn-sm btn-info m-2" })*@
                             @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = item.Idsala }, new { @class = "btn btn-sm btn-danger m-2" })
                         </td>
                     </tr>

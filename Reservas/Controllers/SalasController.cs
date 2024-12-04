@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Reservas.Models;
+using System;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Reservas.Models;
 
 namespace Reservas.Controllers
 {

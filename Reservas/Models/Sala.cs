@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Reservas.Models
 {
@@ -23,7 +20,7 @@ namespace Reservas.Models
 
         [Required]
         [StringLength(150)]
-        public string ubicacion {  get; set; }
+        public string ubicacion { get; set; }
 
         [Required]
         [StringLength(200)]
