@@ -3,19 +3,20 @@
 @{
     ViewBag.Title = "UsuarioReserva";
 }
+<div class="container my-5 p-5">
 
-<h2 class="display-6 text-primary">Mis reservas</h2>
-<hr class="text-bg-primary">
+    <h2 class="display-6 text-primary text-center">Mis reservas</h2>
+    <hr class="text-bg-primary">
 
-<div class="container-fluid my-4 d-flex justify-content-between">
-    <button id="btnPasado" class="btn btn-secondary btn-sm shadow-sm">Historial de reservas</button>
-    <button id="btnFuturo" class="btn btn-primary btn-sm shadow-sm">Reservas activas</button>
+    <div class="container-fluid my-4 d-flex justify-content-between">
+        <button id="btnPasado" class="btn btn-secondary btn-sm shadow-sm">Historial de reservas</button>
+        <button id="btnFuturo" class="btn btn-primary btn-sm shadow-sm">Reservas activas</button>
+    </div>
+
+    <div id="tablaReservas" class="container mx-auto shadow-sm rounded-3 mb-5 mt-3">
+        <!-- aquí se cargará la tabla de reservas (vista parcial) -->
+    </div>
 </div>
-
-<div id="tablaReservas" class="container mx-auto shadow-sm rounded-3 mb-5 mt-3">
-    <!-- aquí se cargará la tabla de reservas (vista parcial) -->
-</div>
-
 @section Scripts {
     <script>
         $(document).ready(function () {

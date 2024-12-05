@@ -27,7 +27,7 @@
 
             // crear un usuario admin por defecto
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            var defaultAdmin = userManager.FindByEmail("admin@gmail..com");
+            var defaultAdmin = userManager.FindByEmail("admin@gmail.com");
 
             if (defaultAdmin == null)
             {

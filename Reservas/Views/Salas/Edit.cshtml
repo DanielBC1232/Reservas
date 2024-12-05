@@ -1,7 +1,7 @@
 ﻿@model Reservas.Models.Sala
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar";
 }
 
 <!DOCTYPE html>
@@ -9,65 +9,68 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
+    <title>Editar</title>
 </head>
 <body>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
 
+    <div class="container col-5">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
 
-        <h2 class="display-6 text-primary mb-4">Modificar Sala</h2>
-        <hr class="text-bg-primary" />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Idsala)
 
-        <div class="mb-3">
-            @Html.LabelFor(model => model.nombreSala, htmlAttributes: new { @class = "form-label" })
-            @Html.EditorFor(model => model.nombreSala, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.nombreSala, "", new { @class = "text-danger" })
+            <h2 class="display-6 text-primary mb-4">Modificar Sala</h2>
+            <hr class="text-bg-primary" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Idsala)
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.nombreSala, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.nombreSala, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombreSala, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.capacidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.capacidad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.capacidad, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.disponibilidadEquipo, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.disponibilidadEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.disponibilidadEquipo, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.horaApertura, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.horaApertura, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.horaApertura, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.horaCierre, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.horaCierre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.horaCierre, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group text-center">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+            </div>
+        }
+
+        <div class="mt-3 text-center">
+            @Html.ActionLink("Volver al Listado", "Index", null, new { @class = "btn btn-link" })
         </div>
-
-        <div class="mb-3">
-            @Html.LabelFor(model => model.capacidad, htmlAttributes: new { @class = "form-label" })
-            @Html.EditorFor(model => model.capacidad, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.capacidad, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="mb-3">
-            @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "form-label" })
-            @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="mb-3">
-            @Html.LabelFor(model => model.disponibilidadEquipo, htmlAttributes: new { @class = "form-label" })
-            @Html.EditorFor(model => model.disponibilidadEquipo, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.disponibilidadEquipo, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="mb-3">
-            @Html.LabelFor(model => model.horaApertura, htmlAttributes: new { @class = "form-label" })
-            @Html.EditorFor(model => model.horaApertura, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.horaApertura, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="mb-3">
-            @Html.LabelFor(model => model.horaCierre, htmlAttributes: new { @class = "form-label" })
-            @Html.EditorFor(model => model.horaCierre, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.horaCierre, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group text-center">
-            <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
-        </div>
-    }
-
-    <div class="mt-3 text-center">
-        @Html.ActionLink("Volver al Listado", "Index", null, new { @class = "btn btn-link" })
     </div>
 </body>
 </html>

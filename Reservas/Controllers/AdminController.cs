@@ -10,6 +10,7 @@ namespace Reservas.Controllers
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Dashboard
+        [Authorize(Roles = "Admin")]
         public ActionResult Dashboard()
         {
 
@@ -18,6 +19,7 @@ namespace Reservas.Controllers
 
 
         // GET: Admin/GetData - general
+        [Authorize(Roles = "Admin")]
         public ActionResult GetData()
         {
 

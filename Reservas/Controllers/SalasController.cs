@@ -13,11 +13,13 @@ namespace Reservas.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Salas
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Salas.ToList());
         }
 
+        [Authorize]
         public ActionResult GetSala()
         {
             var salas = db.Salas.ToList();
@@ -25,6 +27,7 @@ namespace Reservas.Controllers
         }
 
         // GET: Salas/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -40,6 +43,7 @@ namespace Reservas.Controllers
         }
 
         // GET: Salas/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -48,6 +52,7 @@ namespace Reservas.Controllers
         // POST: Salas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "Idsala,nombreSala,capacidad,ubicacion,disponibilidadEquipo,horaApertura,horaCierre")] Sala sala)
         {
             if (ModelState.IsValid)
@@ -61,6 +66,7 @@ namespace Reservas.Controllers
         }
 
         // GET: Salas/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -78,6 +84,7 @@ namespace Reservas.Controllers
         // POST: Salas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "Idsala,nombreSala,capacidad,ubicacion,disponibilidadEquipo,horaApertura,horaCierre")] Sala sala)
         {
             if (ModelState.IsValid)
@@ -90,6 +97,7 @@ namespace Reservas.Controllers
         }
 
         // GET: Salas/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -105,6 +113,7 @@ namespace Reservas.Controllers
         }
 
         // POST: Salas/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -125,6 +134,7 @@ namespace Reservas.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult VerificarReserva(string nombreSala, string horaInicio, string horaCierre, string fecha)
         {
             // Convertir horaInicio y horaCierre a TimeSpan

@@ -15,6 +15,7 @@ namespace Reservas.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Usuarios
+        [Authorize(Roles = "Admin")]
         public ActionResult GetUsuarios()
         {
             //var usuarios = db.Usuarios.Where(u => u.UserName != "Admin").ToList();

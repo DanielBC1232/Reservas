@@ -16,6 +16,7 @@ namespace Reservas.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Reservas
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Reservas.ToList());
@@ -26,7 +27,7 @@ namespace Reservas.Controllers
             return View(db.Reservas.ToList());
         }
 
-
+        [Authorize]
         public ActionResult UsuarioReservas(string Usuario)
         {
             try
@@ -48,6 +49,7 @@ namespace Reservas.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AdminReservas(string usuario)
         {
             try
@@ -66,6 +68,7 @@ namespace Reservas.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult ObtenerReservas(string tipo)
         {
             DateTime hoy = DateTime.Now.Date;
@@ -91,6 +94,8 @@ namespace Reservas.Controllers
             return PartialView("_ReservasTabla", reservas);
         }
 
+        //reservas de uno o todos los usuarios
+        [Authorize(Roles = "Admin")]
         public ActionResult ObtenerReservasPorUsuario(string usuario)
         {
             DateTime hoy = DateTime.Now.Date;
@@ -116,6 +121,7 @@ namespace Reservas.Controllers
         }
 
         // GET: Reservas/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -132,6 +138,7 @@ namespace Reservas.Controllers
 
 
         // POST: Reservas/Create
+        [Authorize]
         public ActionResult Create(Reserva reserva)
         {
             if (reserva != null)
@@ -161,7 +168,7 @@ namespace Reservas.Controllers
             return Json(new { success = false, message = "Los datos de la reserva no son válidos.", errors = errors });
         }
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult EditPreload(int id)
         {
 
@@ -180,7 +187,7 @@ namespace Reservas.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "Idreserva,nombreUsuario,fecha,horaInicio,horaFin,nombreSala,Idsala")] Reserva reserva)
         {
             if (ModelState.IsValid)
@@ -203,7 +210,7 @@ namespace Reservas.Controllers
             return Json(new { success = false, message = "Datos inválidos.", errors });
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Delete(int id)
         {

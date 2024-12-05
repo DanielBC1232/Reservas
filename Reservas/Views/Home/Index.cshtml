@@ -3,21 +3,43 @@
 }
 
 <main>
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Usuarios</h2>
-            <p><a class="btn btn-outline-dark" href="~/Usuarios">Usuarios &raquo;</a></p>
-        </section>
 
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle"> Reservas</h2>
-            <p><a class="btn btn-outline-dark" href="~/Reservas"> Reservas &raquo;</a></p>
-        </section>
+    <div class="navbar-expand-sm">
 
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle"> Salas</h2>
-            <p><a class="btn btn-outline-dark" href="~/Salas"> Salas &raquo;</a></p>
-        </section>
+        <!-- Carousel -->
+        <div id="car" class="carousel slide" data-bs-ride="carousel">
+
+            <!-- dots centrales -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#car" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#car" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#car" data-bs-slide-to="2"></button>
+            </div>
+
+            <!-- contenido -->
+            <div class="carousel-inner" style="height: 500px; width:100%;">
+                <div class="carousel-item active">
+                    <img src="https://loom.es/wp-content/uploads/2022/02/Salas_Desktop2-1.jpg" alt="Los Angeles" class="d-block" style="width:100%">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.zapnito.com/users/599650/posters/b56e8025-97ec-4faa-aebd-bb82c4ad8d5e_large.jpeg" alt="Chicago" class="d-block" style="width:100%">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://cache.marriott.com/is/image/marriotts7prod/ar-bcnsm-forum-17061:Feature-Hor?wid=1920&fit=constrain" alt="New York" class="d-block" style="width:100%">
+                </div>
+            </div>
+
+            <!-- botones laterales -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#car" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#car" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <div class="container my-5 py-5"></div>
 
     </div>
+
 </main>

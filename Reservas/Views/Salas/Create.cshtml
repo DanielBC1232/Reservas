@@ -1,7 +1,7 @@
 ﻿@model Reservas.Models.Sala
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Agregar sala";
 }
 
 <!DOCTYPE html>
@@ -15,73 +15,74 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+    <div class="container col-4 mt-3">
 
-        <div class="form-horizontal">
-            <h4>Sala</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-            <div class="form-group">
-                <label class="control-label col-md-2">Nombre de la Sala</label>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.nombreSala, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.nombreSala, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+                <h4 class="display-6 text-center text-primary">Agregar sala</h4>
+                <hr class="mb-3 text-primary container"/>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Nombre de la Sala</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.nombreSala, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.nombreSala, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Capacidad</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.capacidad, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.capacidad, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Ubicación</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Disponibilidad de Equipos</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.disponibilidadEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.disponibilidadEquipo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Hora de Apertura</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.horaApertura, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+                        @Html.ValidationMessageFor(model => model.horaApertura, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Hora de Cierre</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.horaCierre, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+                        @Html.ValidationMessageFor(model => model.horaCierre, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mt-5 mb-5">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary btn-sm me-3" />
+                            @Html.ActionLink("Volver", "Index")
+                    </div>
                 </div>
             </div>
+        }
 
-            <div class="form-group">
-                <label class="control-label col-md-2">Capacidad</label>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.capacidad, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.capacidad, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label col-md-2">Ubicación</label>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label col-md-2">Disponibilidad de Equipos</label>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.disponibilidadEquipo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.disponibilidadEquipo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label col-md-2">Hora de Apertura</label>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.horaApertura, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
-                    @Html.ValidationMessageFor(model => model.horaApertura, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label col-md-2">Hora de Cierre</label>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.horaCierre, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
-                    @Html.ValidationMessageFor(model => model.horaCierre, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
     </div>
 </body>
 </html>

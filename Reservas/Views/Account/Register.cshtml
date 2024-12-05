@@ -4,39 +4,41 @@
 }
 
 <main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
+    <div class="my-5 container text-white row col-4 d-flex rounded-3 mx-auto p-3 shadow container-login justify-content-center align-items-center">
+        <h3 class="text-primary text-center mt-3">Registrarse</h3>
 
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        <h4>Cree una cuenta nueva.</h4>
-        <hr />
-        @Html.ValidationSummary("", new { @class = "text-danger" })
-        <div class="row">
-            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", @class = "w-100" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="col-9 mx-auto my-5">
+                @Html.ValidationSummary("", new { @class = "text-danger text-center" })
+
+                <div class="mb-3">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-0 bg-light", placeholder = "Correo Electrónico" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control border-0 bg-light", placeholder = "Contraseña" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control border-0 bg-light", placeholder = "Confirmar Contraseña" })
+                </div>
             </div>
-        </div>
-        <div class="row">
-            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+
+            <div class="d-flex justify-content-center my-5">
+                <button type="submit" class="btn btn-primary rounded-3">Registrarse</button>
             </div>
+        }
+
+        <div class="mx-auto text-center">
+            <a class="d-block mb-2" href="/Account/ForgotPassword">Olvidé mi contraseña</a>
+            <a class="" href="/Account/ResetPassword">Cambiar contraseña</a>
         </div>
-        <div class="row">
-            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-md-2 col-md-10">
-                <input type="submit" value="Registrarse" class="btn btn-outline-dark" />
-            </div>
-        </div>
-    }
+    </div>
 </main>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
