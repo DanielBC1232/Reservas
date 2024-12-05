@@ -107,8 +107,7 @@ namespace Reservas.Controllers
             {
                 //buscar con usuario
                 reservas = db.Reservas
-                    .Where(s => s.nombreUsuario.ToLower() == usuario.ToLower() && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
-
+                    .Where(s => s.nombreUsuario == usuario && DbFunctions.TruncateTime(s.fecha) >= hoy).ToList();
 
             }
 
@@ -137,7 +136,7 @@ namespace Reservas.Controllers
         {
             if (reserva != null)
             {
-                string usuario = "Usuario1232";//tomar de sesion
+                string usuario = User.Identity.GetUserName(); // tomar usuario de la sesion
                 // Llamada al SP
                 int resultado = db.Database.SqlQuery<int>(
                     "EXEC SP_INSERTAR_RESERVA @nombreUsuario, @fecha ,@horaInicio, @horaFin, @nombreSala, @Idsala",
