@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Reservas.Models.Reserva>
 
+
 @{
     ViewBag.Title = "Reservas (Admin)";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,6 +16,7 @@
         <select id="selectUsuarios" class="form-select shadow-sm border-0">
         </select>
     </div>
+
 </div>
 
 
@@ -26,32 +28,25 @@
     <script>
         $(document).ready(function () {
 
-            // Función para cargar usuarios en el dropdown
 
             function cargarUsuarios() {
                 $.ajax({
-                    url: '/Reservas/ObtenerUsuarios',//get users
+                    url: '/Usuarios/GetUsuarios',
                     method: 'GET',
                     success: function (usuarios) {
                         let options = '<option value="ninguno">Ninguno</option>';
                         options += '<option value="todos">Todos</option>';
                         usuarios.forEach(usuario => {
-                            options += `<option value="${usuario.Nombre}">${usuario.Nombre}</option>`;
+                            options += `<option value="${usuario.UserName}">${usuario.UserName}</option>`;
                         });
                         $("#selectUsuarios").html(options);
                     },
-                    /*error: function () {
-                        Swal.fire({
-                            icon: "error",
-                            text: "Error al cargar los usuarios.",
-                        });
-                    }*/
+
                 });
             }
 
             cargarUsuarios();
 
-            // Evento: cargar reservas según el usuario seleccionado
             $("#selectUsuarios").on("change", function () {
                 let usuario = $(this).val();
                 cargarReservas(usuario);
@@ -64,7 +59,7 @@
                     method: 'GET',
                     data: { usuario: fetch },
                     success: function (html) {
-                        $("#tablaReservas").html(html); // Renderizar la vista parcial
+                        $("#tablaReservas").html(html);
                     }
                 });
             }

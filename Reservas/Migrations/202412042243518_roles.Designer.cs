@@ -7,13 +7,13 @@ namespace Reservas.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.5.1")]
-    public sealed partial class Identity1 : IMigrationMetadata
+    public sealed partial class roles : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Identity1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(roles));
         
         string IMigrationMetadata.Id
         {
-            get { return "202412041710295_Identity1"; }
+            get { return "202412042243518_roles"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,4 +1,5 @@
-﻿using Reservas.Models;
+﻿using Microsoft.AspNet.Identity;
+using Reservas.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,7 +31,7 @@ namespace Reservas.Controllers
         {
             try
             {
-                string usuarioP = "Usuario02"; // tomar usuario de la sesion
+                string usuarioP = User.Identity.GetUserName(); // tomar usuario de la sesion
 
                 var hoy = DateTime.Now.Date;
 
@@ -69,8 +70,7 @@ namespace Reservas.Controllers
         {
             DateTime hoy = DateTime.Now.Date;
 
-            string usuarioP = "Usuario02"; // tomar usuario de la sesion
-            //string usuarioP = "admin"; // admin
+            string usuarioP = User.Identity.GetUserName(); // tomar usuario de la sesion
 
 
             List<Reserva> reservas = new List<Reserva>();
@@ -115,20 +115,6 @@ namespace Reservas.Controllers
             //vista parcial
             return PartialView("_ReservasTabla", reservas);
         }
-
-        //cambiar por listado de usuarios
-        public ActionResult ObtenerUsuarios()
-        {
-
-            List<dynamic> usuarios = new List<dynamic>
-        {
-            new {Nombre = "Usuario02"},
-            new {Nombre = "Usuario1232"},
-        };
-            return Json(usuarios, JsonRequestBehavior.AllowGet);
-            //return View(usuario);
-        }
-
 
         // GET: Reservas/Details/5
         public ActionResult Details(int? id)

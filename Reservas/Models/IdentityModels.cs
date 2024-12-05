@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,12 +16,13 @@ namespace Reservas.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Agregar reclamaciones de usuario personalizadas aquí
             return userIdentity;
+
         }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext():base("DefaultConnection", throwIfV1Schema: false)
+        public ApplicationDbContext():base("Reserva", throwIfV1Schema: false)
         {
         }
 
@@ -32,7 +34,6 @@ namespace Reservas.Models
         public DbSet<Reserva> Reservas { get; set; }
         public DbSet<Sala> Salas { get; set; }
         public DbSet<SalaReserva> SalaReservas { get; set; }
-
 
     }
 }
